@@ -5,10 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-// import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
-// import firebase from "firebase";
-// import "firebase/firebase-firestore";
-// import "firebase/firebase-auth";
 // import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 
@@ -42,13 +38,17 @@ const app = initializeApp({
 export const Context = createContext(null);
 
 const auth = getAuth();
-// const firebaseApp = initializeApp({
-//   apiKey: "AIzaSyBW9rHiEs0gotGeGdaYa3L87FCW6GqXHz8",
-//   authDomain: "chat-react-e6c57.firebaseapp.com",
-//   projectId: "chat-react-e6c57",
-// });
 
-const db = getFirestore(app);
+const firestore = getFirestore(app);
+
+// async function messages() {
+//   const citiesCol = collection(firestore, "messages");
+//   const citySnapshot = await getDocs(citiesCol);
+//   const cityList = citySnapshot.docs.map((doc) => doc.data());
+//   console.log(cityList);
+//   return cityList;
+// }
+// console.log(messages());
 
 ReactDOM.render(
   <React.StrictMode>
@@ -56,7 +56,7 @@ ReactDOM.render(
       value={{
         app,
         auth,
-        db,
+        firestore,
       }}
     >
       <App />

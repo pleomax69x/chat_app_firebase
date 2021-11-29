@@ -6,40 +6,38 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { Context } from "../index";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Loader from "./Loader";
+import { orderBy } from "firebase/firestore";
 import {
   collection,
-  getDocs,
-  getFirestore,
   addDoc,
   serverTimestamp,
+  getDocs,
+  getFirestore,
 } from "firebase/firestore";
 
 const Chat = () => {
-  // const { auth } = useContext(Context);
-  const { auth, db } = useContext(Context);
+  const { auth, firestore } = useContext(Context);
   const [user] = useAuthState(auth);
   const [value, setVaule] = useState("");
-  // const [message, loading] = useCollectionData(
-  //   db.collection("messages").orderBy("createdAt")
-  // );
-  // const [message, loading] = useCollectionData(
-  //   collection(getFirestore(db), "hooks")
-  // );
 
-  // const querySnapshot = await getDocs(collection(db, "messages"));
-  async function getMessages(db) {
-    const messagesCol = collection(db, "messages");
-    const citySnapshot = await getDocs(messagesCol);
-    const messagesList = citySnapshot.docs.map((doc) => doc.data());
-    return messagesList;
-  }
+  const [messages, loading] = useCollectionData(
+    collection(firestore, "messages")
+    // orderBy("createdAt")
+  );
+  // let messages;
+  // async function getMessages() {
+  //   const citiesCol = collection(firestore, "messages");
+  //   const citySnapshot = await getDocs(citiesCol);
+  //   const cityList = citySnapshot.docs.map((doc) => doc.data());
+  //   messages = cityList;
+  //   console.log(messages);
+  //   return cityList;
+  // }
 
-  console.log(getMessages);
-  // console.log(message);
-
+  console.log(messages);
   const sendMessage = async () => {
     try {
-      const docRef = await addDoc(collection(db, "messages"), {
+      const docRef = await addDoc(collection(firestore, "messages"), {
         uid: user.uid,
         displayName: user.displayName,
         photoURL: user.photoURL,
@@ -50,15 +48,6 @@ const Chat = () => {
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-
-    // db.collection("messages").add({
-    //   uid: user.uid,
-    //   displayName: user.displayName,
-    //   photoURL: user.photoURL,
-    //   text: value,
-    //   // createdAt: db.r TODO firebase.firestore.FieldValue.serverTimestamp()
-    // });
-    console.log(value);
     setVaule("");
   };
 
@@ -80,26 +69,28 @@ const Chat = () => {
             overflow: "auto",
           }}
         >
-          {/* {messages.map((message) => (
-            <div
-              style={{
-                margin: 10,
-                border:
-                  user.uid === message.uid
-                    ? "2px solid green"
-                    : "2px dashed red",
-                marginLeft: user.uid === message.uid ? "auto" : "10px",
-                width: "fit-content",
-                padding: "5px",
-              }}
-            >
-              <Grid container>
-                <Avatar src={message.photoURL} />
-                <div>{message.displayName} </div>
-              </Grid>
-              <div>{message.text} </div>
-            </div>
-          ))} */}
+          {!!messages &&
+            messages.map((message) => (
+              <div
+                // key={message.text}
+                style={{
+                  margin: 10,
+                  border:
+                    user.uid === message.uid
+                      ? "2px solid green"
+                      : "2px dashed red",
+                  marginLeft: user.uid === message.uid ? "auto" : "10px",
+                  width: "fit-content",
+                  padding: "5px",
+                }}
+              >
+                <Grid container>
+                  <Avatar src={message.photoURL} />
+                  <div>{message.displayName} </div>
+                </Grid>
+                <div>{message.text} </div>
+              </div>
+            ))}
         </div>
         <Grid
           container
