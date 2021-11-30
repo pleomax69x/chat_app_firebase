@@ -1,7 +1,7 @@
 import { Avatar, Button, Container, TextField } from "@mui/material";
 
 import Grid from "@mui/material/Grid";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { Context } from "../index";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -24,17 +24,18 @@ const Chat = () => {
     collection(firestore, "messages")
     // orderBy("createdAt")
   );
-  // let messages;
+
   // async function getMessages() {
+
   //   const citiesCol = collection(firestore, "messages");
   //   const citySnapshot = await getDocs(citiesCol);
   //   const cityList = citySnapshot.docs.map((doc) => doc.data());
-  //   messages = cityList;
-  //   console.log(messages);
+  //   console.log(cityList);
   //   return cityList;
   // }
 
-  console.log(messages);
+  // console.log(getMessages());
+
   const sendMessage = async () => {
     try {
       const docRef = await addDoc(collection(firestore, "messages"), {
@@ -51,9 +52,9 @@ const Chat = () => {
     setVaule("");
   };
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <Container>
       <Grid
@@ -69,28 +70,27 @@ const Chat = () => {
             overflow: "auto",
           }}
         >
-          {!!messages &&
-            messages.map((message) => (
-              <div
-                // key={message.text}
-                style={{
-                  margin: 10,
-                  border:
-                    user.uid === message.uid
-                      ? "2px solid green"
-                      : "2px dashed red",
-                  marginLeft: user.uid === message.uid ? "auto" : "10px",
-                  width: "fit-content",
-                  padding: "5px",
-                }}
-              >
-                <Grid container>
-                  <Avatar src={message.photoURL} />
-                  <div>{message.displayName} </div>
-                </Grid>
-                <div>{message.text} </div>
-              </div>
-            ))}
+          {messages.map((message) => (
+            <div
+              key={message.text}
+              style={{
+                margin: 10,
+                border:
+                  user.uid === message.uid
+                    ? "2px solid green"
+                    : "2px dashed red",
+                marginLeft: user.uid === message.uid ? "auto" : "10px",
+                width: "fit-content",
+                padding: "5px",
+              }}
+            >
+              <Grid container>
+                <Avatar src={message.photoURL} />
+                <div>{message.displayName} </div>
+              </Grid>
+              <div>{message.text} </div>
+            </div>
+          ))}
         </div>
         <Grid
           container
