@@ -41,15 +41,6 @@ const auth = getAuth();
 
 const firestore = getFirestore(app);
 
-// async function messages() {
-//   const citiesCol = collection(firestore, "messages");
-//   const citySnapshot = await getDocs(citiesCol);
-//   const cityList = citySnapshot.docs.map((doc) => doc.data());
-//   console.log(cityList);
-//   return cityList;
-// }
-// console.log(messages());
-
 ReactDOM.render(
   <React.StrictMode>
     <Context.Provider

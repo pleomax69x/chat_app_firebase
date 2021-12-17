@@ -21,8 +21,8 @@ const Chat = () => {
   const [value, setVaule] = useState("");
 
   const [messages, loading] = useCollectionData(
-    collection(firestore, "messages")
-    // orderBy("createdAt")
+    collection(firestore, "messages"),
+    orderBy("createdAt")
   );
 
   // async function getMessages() {

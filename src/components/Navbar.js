@@ -1,6 +1,5 @@
 import { React, useContext } from "react";
 import AppBar from "@mui/material/AppBar";
-// import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -12,7 +11,7 @@ import { Context } from "../index";
 const Navbar = () => {
   const { auth } = useContext(Context);
   const [user] = useAuthState(auth);
-  // const user = false;
+
   return (
     <AppBar color={"secondary"} position="static">
       <Toolbar variant="dense">
